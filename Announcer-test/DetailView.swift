@@ -51,14 +51,6 @@ struct DetailView: View {
             }
             .padding()
         }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack {
-                    Text("Detail View")
-                        .font(.headline)
-                }
-            }
-        }
     }
     
     private func formatHTML(_ html: String) -> AttributedString? {

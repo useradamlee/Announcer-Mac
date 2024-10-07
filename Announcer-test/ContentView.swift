@@ -54,17 +54,17 @@ struct ContentView: View {
                     clearAllFilters()
                 }
             }
+            NotificationCenter.default.addObserver(forName: NSMenu.didChangeItemNotification, object: nil, queue: .main) { _ in
+                DispatchQueue.main.async {
+                    ensureSidebarVisible()
+                }
+            }
         }
     }
     // MARK: - Views
     
     private var filterView: some View {
         List {
-            Section {
-                TextField("Search", text: $searchText)
-                    .textFieldStyle(.roundedBorder)
-            }
-            
             Section("Filters") {
                 DisclosureGroup("Categories (\(selectedTags.count))") {
                     ForEach(availableTags, id: \.self) { tag in
@@ -215,6 +215,16 @@ struct ContentView: View {
             return articles
         }
         return nil
+    }
+    
+    private func ensureSidebarVisible() {
+        if let splitViewController = NSApp.keyWindow?.contentViewController as? NSSplitViewController {
+            splitViewController.splitViewItems.forEach { item in
+                if !item.isCollapsed {
+                    item.isCollapsed = false
+                }
+            }
+        }
     }
 }
 
